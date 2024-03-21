@@ -11,6 +11,7 @@ import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
+import PropTypes from "prop-types";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -76,10 +77,10 @@ const Price = styled.div`
   border-radius: var(--border-radius-sm);
   margin-top: 2.4rem;
 
-  background-color: ${(props) =>
-    props.isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
-  color: ${(props) =>
-    props.isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
+  background-color: ${({ $isPaid }) =>
+    $isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
+  color: ${({ $isPaid }) =>
+    $isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
 
   & p:last-child {
     text-transform: uppercase;
@@ -103,21 +104,23 @@ const Footer = styled.footer`
 
 // A purely presentational component
 function BookingDataBox({ booking }) {
-  const {
-    created_at,
-    startDate,
-    endDate,
-    numNights,
-    numGuests,
-    cabinPrice,
-    extrasPrice,
-    totalPrice,
-    hasBreakfast,
-    observations,
-    isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
-    cabins: { name: cabinName },
-  } = booking;
+  const created_at = booking?.created_at;
+  const startDate = booking?.startDate;
+  const endDate = booking?.endDate;
+  const numNights = booking?.numNights;
+  const numGuests = booking?.numGuests;
+  const cabinPrice = booking?.cabinPrice;
+  const extrasPrice = booking?.extrasPrice;
+  const totalPrice = booking?.totalPrice;
+  const hasBreakfast = booking?.hasBreakfast;
+  const observations = booking?.observations;
+  const isPaid = booking?.isPaid;
+  const guestName = booking?.guests?.fullName;
+  const email = booking?.guests?.email;
+  const country = booking?.guests?.country;
+  const countryFlag = booking?.guests?.countryFlag;
+  const nationalID = booking?.guests?.nationalID;
+  const cabinName = booking?.cabins?.name;
 
   return (
     <StyledBookingDataBox>
@@ -163,7 +166,7 @@ function BookingDataBox({ booking }) {
           {hasBreakfast ? "Yes" : "No"}
         </DataItem>
 
-        <Price isPaid={isPaid}>
+        <Price $isPaid={isPaid}>
           <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
             {formatCurrency(totalPrice)}
 
@@ -185,3 +188,28 @@ function BookingDataBox({ booking }) {
 }
 
 export default BookingDataBox;
+BookingDataBox.propTypes = {
+  booking: PropTypes.shape({
+    created_at: PropTypes.string,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    numNights: PropTypes.number,
+    numGuests: PropTypes.number,
+    cabinPrice: PropTypes.number,
+    extrasPrice: PropTypes.number,
+    totalPrice: PropTypes.number,
+    hasBreakfast: PropTypes.bool,
+    observations: PropTypes.string,
+    isPaid: PropTypes.bool,
+    guests: PropTypes.shape({
+      fullName: PropTypes.string,
+      email: PropTypes.string,
+      country: PropTypes.string,
+      countryFlag: PropTypes.string,
+      nationalID: PropTypes.string,
+    }),
+    cabins: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+  }),
+};
