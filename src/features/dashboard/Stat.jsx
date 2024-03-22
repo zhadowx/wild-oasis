@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledStat = styled.div`
   /* Box */
@@ -58,3 +59,9 @@ function Stat({ icon, title, value, color }) {
 }
 
 export default Stat;
+Stat.propTypes = {
+  icon: PropTypes.node,
+  title: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  color: PropTypes.string,
+};
