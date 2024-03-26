@@ -10,15 +10,15 @@ import { formatCurrency } from "../../utils/helpers";
 
 function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
   //1. Get the total number of bookings
-  const totalBookings = bookings.length;
+  const totalBookings = bookings?.length;
 
   //2. Get the total sales
-  const sales = bookings.reduce((acc, cur) => acc + cur.totalPrice, 0);
+  const sales = bookings?.reduce((acc, cur) => acc + cur.totalPrice, 0);
   //3. Get the total number of check-ins
-  const checkIns = confirmedStays.length;
+  const checkIns = confirmedStays?.length;
   //4. Calculate the occupancy rate
   const occupation =
-    confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
+    confirmedStays?.reduce((acc, cur) => acc + cur.numNights, 0) /
     (numDays * cabinCount);
   return (
     <>
